@@ -58,7 +58,7 @@ app.delete('/repositories/:id', checkRepositoryId, (request, response) => {
   const { id } = request.params;
   const index = getIndex(repositories, id);
   repositories.splice(index, 1);
-  return response.status(204).send();
+  return response.status(204).send('Deleted Successfully');
 });
 
 app.post('/repositories/:id/like', checkRepositoryId, (request, response) => {
