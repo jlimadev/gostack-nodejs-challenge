@@ -46,7 +46,7 @@ describe("Repositories", () => {
     );
   });
 
-  it("should be able to update repository", async () => {
+  it.only("should be able to update repository", async () => {
     const repository = await request(app)
       .post("/repositories")
       .send({
