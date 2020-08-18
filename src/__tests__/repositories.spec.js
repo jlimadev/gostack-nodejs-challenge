@@ -46,7 +46,7 @@ describe("Repositories", () => {
     );
   });
 
-  it.only("should be able to update repository", async () => {
+  it("should be able to update repository", async () => {
     const repository = await request(app)
       .post("/repositories")
       .send({
@@ -96,7 +96,7 @@ describe("Repositories", () => {
     });
   });
 
-  it("should be able to delete the repository", async () => {
+  it.only("should be able to delete the repository", async () => {
     const response = await request(app)
       .post("/repositories")
       .send({
