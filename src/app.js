@@ -47,7 +47,12 @@ app.put('/repositories/:id', (request, response) => {
 
 app.delete('/repositories/:id', (request, response) => {
   const { id } = request.params;
-  repositories.splice(id, 1);
+
+  const index = repositories.findIndex((repository) => {
+    return repository.id === id;
+  });
+
+  repositories.splice(index, 1);
   return response.status(204).send();
 });
 
