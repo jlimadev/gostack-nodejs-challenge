@@ -7,7 +7,7 @@ app.use(express.json());
 app.use(cors());
 const repositories = [];
 
-function checkUserId(request, response, next) {
+function checkRepositoryId(request, response, next) {
   const { id } = request.params;
   const index = repositories.findIndex((repository) => repository.id === id);
   if(!repositories[index]){
@@ -15,6 +15,12 @@ function checkUserId(request, response, next) {
   }
   return next();
 };
+
+const getIndex = (repositories, id) => {
+  return repositories.findIndex((repository) => {
+    return repository.id === id;
+  });
+}
 
 app.get('/repositories', (request, response) => {
   return response.json(repositories);
@@ -33,13 +39,10 @@ app.post('/repositories', (request, response) => {
   return response.json(newRepository);
 });
 
-app.put('/repositories/:id', checkUserId, (request, response) => {
+app.put('/repositories/:id', checkRepositoryId, (request, response) => {
   const { id } = request.params;
   const { url, title, techs } = request.body;
-
-  const index = repositories.findIndex((repository) => {
-    return repository.id === id;
-  });
+  const index = getIndex(repositories, id);
 
   repositories[index] = {
     id,
@@ -51,19 +54,18 @@ app.put('/repositories/:id', checkUserId, (request, response) => {
   return response.json(repositories[index]);
 });
 
-app.delete('/repositories/:id', checkUserId, (request, response) => {
+app.delete('/repositories/:id', checkRepositoryId, (request, response) => {
   const { id } = request.params;
-
-  const index = repositories.findIndex((repository) => {
-    return repository.id === id;
-  });
-
+  const index = getIndex(repositories, id);
   repositories.splice(index, 1);
   return response.status(204).send();
 });
 
-app.post('/repositories/:id/like', (request, response) => {
-  // TODO
+app.post('/repositories/:id/like', checkRepositoryId, (request, response) => {
+  const { id } = request.params;
+  const index = getIndex(repositories, id);
+  repositories[index].likes = repositories[index].likes + 1;
+  return response.json(repositories[index]);
 });
 
 module.exports = app;
