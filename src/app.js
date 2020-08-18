@@ -35,15 +35,14 @@ app.put('/repositories/:id', (request, response) => {
     return repository.id === id;
   });
 
-  const updatedRepository = {
+  repositories[index] = {
     id,
-    url,
-    title,
-    techs
+    url: url ? url : repositories[index].url,
+    title: title ? title : repositories[index].title,
+    techs: techs ? techs : repositories[index].techs,
+    likes: repositories[index].likes
   };
-
-  repositories[index] = updatedRepository;
-  return response.json(updatedRepository);
+  return response.json(repositories[index]);
 });
 
 app.delete('/repositories/:id', (request, response) => {
